@@ -27,9 +27,10 @@ Route::get('hello',function(){
 	return route('abcroute');
 });
 
-Route::get('books','AdminControl@index');
+Route::get('books','AdminControl@index')->name('books');
 
-Route::Post('books/create','AdminControl@store')->name('books.store');
-
-
+Route::post('books/create','AdminControl@store')->name('books.store');
+Route::get('books/edit/{id}','AdminControl@edit')->name('books.edit');
+Route::post('books/update/{id}','AdminControl@update')->name('books.update');
+Route::post('books/delete/{id}','AdminControl@destroy')->name('books.delete');
 

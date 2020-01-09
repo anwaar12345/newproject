@@ -14,8 +14,9 @@ class AdminControl extends Controller
     public function index()
     {
         //
+        $is_edit = false;
         $books  = book::get();
-        return view('books',compact('books'));
+        return view('books',compact('books','is_edit'));
     }
 
     /**
@@ -36,8 +37,15 @@ class AdminControl extends Controller
      */
     public function store(Request $request)
     {
-        //
-        return $request->all();
+        $books = new book;
+        $books->name = $request->name;
+        $books->description = $request->description;
+        //inserting into DataBase
+        $books->save();
+        return redirect('books')->with('message','books saved');
+
+
+       // return $request->all();
     }
 
     /**
@@ -60,6 +68,11 @@ class AdminControl extends Controller
     public function edit($id)
     {
         //
+        $gid = $id; 
+        $fetch_record = book::find($id);
+        $is_edit = true;
+        $books = book::get();
+        return view('books',compact('fetch_record','is_edit','books','gid'));
     }
 
     /**
@@ -72,6 +85,11 @@ class AdminControl extends Controller
     public function update(Request $request, $id)
     {
         //
+        $fetch_record = book::find($id);
+        $fetch_record->name =  $request->name;
+        $fetch_record->description = $request->description;
+        $fetch_record->update();
+        return redirect('books')->with('message','books updated');
     }
 
     /**
@@ -83,5 +101,8 @@ class AdminControl extends Controller
     public function destroy($id)
     {
         //
+        $fetch_record = book::find($id);
+        $fetch_record->delete();
+        return redirect('books')->with('message','books deleted');   
     }
 }
